@@ -15,8 +15,18 @@ public class Req {
     }
 
     public static Req of(String content) {
-        /* TODO parse a content */
-        return new Req(null, null, null, null);
+        String[] arrayContent = content.split(System.lineSeparator(), 8);
+        String[] theArrayContent = arrayContent[0].split("/");
+        String httpRT = theArrayContent[0].trim();
+        String poohM = theArrayContent[1].trim();
+        String sourceN = theArrayContent[2].split(" ")[0].trim();
+        String parm;
+        if ("GET".equals(httpRT) && "topic".equals(poohM)) {
+            parm = theArrayContent[3].split(" ")[0];
+        } else {
+            parm = arrayContent[arrayContent.length - 1].trim();
+        }
+        return new Req(httpRT, poohM, sourceN, parm);
     }
 
     public String httpRequestType() {
