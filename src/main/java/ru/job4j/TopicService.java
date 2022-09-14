@@ -22,7 +22,7 @@ public class TopicService implements Service {
             String text = topic.get(name).get(req.getParam()).poll();
             rsl = new Resp(text, "201");
             if (text == null) {
-                rsl = new Resp("", "501");
+                rsl = new Resp("", "204");
             }
         }
         return rsl;

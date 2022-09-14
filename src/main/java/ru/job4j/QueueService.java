@@ -16,7 +16,7 @@ public class QueueService implements Service {
         } else if ("GET".equals(req.httpRequestType())) {
             rsl = new Resp(queue.getOrDefault(name, new ConcurrentLinkedQueue<>()).poll(), "201");
             if (rsl.text() == null) {
-                rsl = new Resp("", "501");
+                rsl = new Resp("", "204");
             }
         }
         return rsl;
