@@ -10,19 +10,20 @@ public class TopicService implements Service {
     @Override
     public Resp process(Req req) {
         String name = req.getSourceName();
-        Resp rsl = new Resp("", "204");
+        Resp rsl = new Resp("", "501");
         if ("POST".equals(req.httpRequestType())) {
-            for (ConcurrentLinkedQueue<String> queue : topic.get(name).values()) {
+            for (ConcurrentLinkedQueue<String> queue : topic.getOrDefault(name, new ConcurrentHashMap<>()).values()) {
                 queue.add(req.getParam());
+                rsl = new Resp(req.getParam(), "201");
             }
         } else if ("GET".equals(req.httpRequestType())) {
             topic.putIfAbsent(name, new ConcurrentHashMap<>());
             topic.get(name).putIfAbsent(req.getParam(), new ConcurrentLinkedQueue<>());
             String text = topic.get(name).get(req.getParam()).poll();
+            rsl = new Resp(text, "201");
             if (text == null) {
-                text = "";
+                rsl = new Resp("", "501");
             }
-            rsl = new Resp(text, "200");
         }
         return rsl;
     }
