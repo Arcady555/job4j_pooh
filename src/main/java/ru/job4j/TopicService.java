@@ -12,6 +12,7 @@ public class TopicService implements Service {
         String name = req.getSourceName();
         Resp rsl = new Resp("", "501");
         if ("POST".equals(req.httpRequestType())) {
+            rsl = new Resp(req.getParam(), "204");
             for (ConcurrentLinkedQueue<String> queue : topic.getOrDefault(name, new ConcurrentHashMap<>()).values()) {
                 queue.add(req.getParam());
                 rsl = new Resp(req.getParam(), "201");
